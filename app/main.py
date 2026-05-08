@@ -1,13 +1,13 @@
 """
-Payments API — minimal baseline.
-
-The main branch only exposes uptime/version probes. Real business
-endpoints get added in feature branches so Cova's PR Guard has
-clear diffs to flag.
+Payments API — minimal baseline + file uploads service.
 """
 from fastapi import FastAPI
 
+from app.routes import uploads
+
 app = FastAPI(title="payments-api", version="0.1.0")
+
+app.include_router(uploads.router)
 
 
 @app.get("/health")
