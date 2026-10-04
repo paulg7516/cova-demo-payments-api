@@ -86,8 +86,19 @@ def live_commit(client: httpx.Client) -> tuple[str, str]:
     return sha, _msgs[sha]
 
 
+def dd_site() -> str:
+    """DD_SITE as pasted ("app.datadoghq.com", "https://app.datadoghq.eu/")
+    -> the bare site ("datadoghq.com"), like Cova's Site field."""
+    s = os.environ.get("DD_SITE", "datadoghq.com").strip().lower()
+    s = s.split("://", 1)[-1].split("/", 1)[0]
+    for prefix in ("app.", "api."):
+        if s.startswith(prefix):
+            s = s[len(prefix):]
+    return s or "datadoghq.com"
+
+
 def send_to_datadog(requests_n: int, errors_n: int) -> None:
-    site = os.environ.get("DD_SITE", "datadoghq.com")
+    site = dd_site()
     now = int(time.time())
     tags = [f"service:{SERVICE}", "env:prod", "source:cova-e2e"]
     body = {"series": [
