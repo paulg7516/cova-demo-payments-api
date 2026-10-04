@@ -1,4 +1,5 @@
 """Subscription billing — create / change / cancel plans, invoice history, Stripe webhooks."""
+from typing import Optional
 from fastapi import APIRouter, Header, HTTPException, Request
 from pydantic import BaseModel
 
@@ -16,7 +17,7 @@ router = APIRouter(prefix="/api/billing", tags=["billing"])
 class CreateSubscriptionRequest(BaseModel):
     customer_id: str
     price_id: str
-    trial_days: int | None = None
+    trial_days: Optional[int] = None
 
 
 class ChangePlanRequest(BaseModel):

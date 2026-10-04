@@ -1,4 +1,5 @@
 """Stripe client wrapper for recurring billing — subscriptions, invoices, webhooks."""
+from typing import Optional
 import os
 
 import stripe
@@ -7,7 +8,7 @@ stripe.api_key = os.environ.get("STRIPE_SECRET_KEY", "")
 WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET", "")
 
 
-def create_subscription(customer_id: str, price_id: str, trial_days: int | None = None) -> dict:
+def create_subscription(customer_id: str, price_id: str, trial_days: Optional[int] = None) -> dict:
     params: dict = {
         "customer": customer_id,
         "items": [{"price": price_id}],
